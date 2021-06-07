@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FinalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Computers">
+          <Key>
+            <PropertyRef Name="ComputerId" />
+          </Key>
+          <Property Name="ComputerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComputerModel" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OwnerId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ComputerPhoto" Type="varchar" MaxLength="50" />
+          <Property Name="Notes" Type="varchar" MaxLength="300" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="State" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="ZipCode" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="ReservationLimit" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservations">
+          <Key>
+            <PropertyRef Name="ReservationId" />
+          </Key>
+          <Property Name="ReservationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComputerId" Type="int" Nullable="false" />
+          <Property Name="LocationId" Type="int" Nullable="false" />
+          <Property Name="ReservationDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserDetails">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Computers_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="Computers" Type="Self.Computers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Computers">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservations_Computers">
+          <End Role="Computers" Type="Self.Computers" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Computers">
+              <PropertyRef Name="ComputerId" />
+            </Principal>
+            <Dependent Role="Reservations">
+              <PropertyRef Name="ComputerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservations_Locations">
+          <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Reservations">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FinalModelStoreContainer">
+          <EntitySet Name="Computers" EntityType="Self.Computers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservations" EntityType="Self.Reservations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Computers_UserDetails" Association="Self.FK_Computers_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="Computers" EntitySet="Computers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservations_Computers" Association="Self.FK_Reservations_Computers">
+            <End Role="Computers" EntitySet="Computers" />
+            <End Role="Reservations" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservations_Locations" Association="Self.FK_Reservations_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Reservations" EntitySet="Reservations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FinalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Computer">
+          <Key>
+            <PropertyRef Name="ComputerId" />
+          </Key>
+          <Property Name="ComputerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComputerModel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OwnerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ComputerPhoto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservations_Computers" FromRole="Computers" ToRole="Reservations" />
+          <NavigationProperty Name="UserDetail" Relationship="FinalModel.FK_Computers_UserDetails" FromRole="Computer" ToRole="UserDetail" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="ReservationLimit" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservations_Locations" FromRole="Locations" ToRole="Reservations" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ReservationId" />
+          </Key>
+          <Property Name="ReservationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComputerId" Type="Int32" Nullable="false" />
+          <Property Name="LocationId" Type="Int32" Nullable="false" />
+          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Computer" Relationship="Self.FK_Reservations_Computers" FromRole="Reservations" ToRole="Computers" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Reservations_Locations" FromRole="Reservations" ToRole="Locations" />
+        </EntityType>
+        <Association Name="FK_Reservations_Computers">
+          <End Role="Computers" Type="Self.Computer" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Computers">
+              <PropertyRef Name="ComputerId" />
+            </Principal>
+            <Dependent Role="Reservations">
+              <PropertyRef Name="ComputerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservations_Locations">
+          <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+          <End Role="Reservations" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Reservations">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FinalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Computers" EntityType="Self.Computer" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Reservations" EntityType="Self.Reservation" />
+          <AssociationSet Name="FK_Reservations_Computers" Association="Self.FK_Reservations_Computers">
+            <End Role="Computers" EntitySet="Computers" />
+            <End Role="Reservations" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservations_Locations" Association="Self.FK_Reservations_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Reservations" EntitySet="Reservations" />
+          </AssociationSet>
+          <EntitySet Name="UserDetails" EntityType="FinalModel.UserDetail" />
+          <AssociationSet Name="FK_Computers_UserDetails" Association="FinalModel.FK_Computers_UserDetails">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="Computer" EntitySet="Computers" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="UserDetail">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Computers" Relationship="FinalModel.FK_Computers_UserDetails" FromRole="UserDetail" ToRole="Computer" />
+        </EntityType>
+        <Association Name="FK_Computers_UserDetails">
+          <End Type="FinalModel.UserDetail" Role="UserDetail" Multiplicity="1" />
+          <End Type="FinalModel.Computer" Role="Computer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Computer">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FinalModelStoreContainer" CdmEntityContainer="FinalEntities">
+          <EntitySetMapping Name="Computers">
+            <EntityTypeMapping TypeName="FinalModel.Computer">
+              <MappingFragment StoreEntitySet="Computers">
+                <ScalarProperty Name="ComputerId" ColumnName="ComputerId" />
+                <ScalarProperty Name="ComputerModel" ColumnName="ComputerModel" />
+                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+                <ScalarProperty Name="ComputerPhoto" ColumnName="ComputerPhoto" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="FinalModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="ReservationLimit" ColumnName="ReservationLimit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservations">
+            <EntityTypeMapping TypeName="FinalModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservations">
+                <ScalarProperty Name="ReservationId" ColumnName="ReservationId" />
+                <ScalarProperty Name="ComputerId" ColumnName="ComputerId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDetails">
+            <EntityTypeMapping TypeName="FinalModel.UserDetail">
+              <MappingFragment StoreEntitySet="UserDetails">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
