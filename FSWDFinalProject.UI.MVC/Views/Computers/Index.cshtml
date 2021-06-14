@@ -1,0 +1,175 @@
+﻿@model IEnumerable<FSWDFinalProject.DATA.EF.Computer>
+
+@{
+    ViewBag.Title = "My Computers";
+}
+
+@Html.Partial("_BannerPartial")
+
+@if (!User.IsInRole("Customer"))
+{
+
+    <p>
+        <a class="btn btn-primary ml-4 mt-3" href="@Url.Action("Create", "Computers")">Add New <i class="fas fa-plus"></i></a>
+    </p>
+
+
+<div class="table-responsive-md">
+    <table class="table data-table display">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ComputerModel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ComputerPhoto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateAdded)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserDetail.FirstName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ComputerModel)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.ComputerPhoto)*@
+                        <img src="~/Content/images/computers/t_@item.ComputerPhoto" alt="@item.ComputerModel" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateAdded)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserDetail.FirstName)
+                    </td>
+                    <td>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <a href="@Url.Action("Details", "Computers", new { id=item.ComputerId})"> <i class="fas fa-info-circle"></i></a>
+                        }
+                        @if (Request.IsAuthenticated && User.IsInRole("Customer"))
+                        {
+                            <br />
+                            <a href="@Url.Action("Edit", "Computers", new {id = item.ComputerId})"><i class="fas fa-edit"></i></a>
+                            <br />
+                            <a href="@Url.Action("Delete", "Computers", new {id = item.ComputerId})"><i class="fas fa-trash-alt"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+}
+
+@if (User.IsInRole("Customer"))
+{
+
+    <p>
+        <a class="btn btn-primary ml-4 mt-3" href="@Url.Action("Create", "Computers")">Add New <i class="fas fa-plus"></i></a>
+
+    </p>
+    <table class="table data-table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ComputerModel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ComputerPhoto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateAdded)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ComputerModel)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.ComputerPhoto)*@
+                        <img src="~/Content/images/computers/t_@item.ComputerPhoto" alt="@item.ComputerModel" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateAdded)
+                    </td>
+                    <td>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <a href="@Url.Action("Details", "Computers", new { id=item.ComputerId})"> <i class="fas fa-info-circle"></i></a>
+                        }
+                        @if (Request.IsAuthenticated && User.IsInRole("Customer"))
+                        {
+                            <br />
+                            <a href="@Url.Action("Edit", "Computers", new {id = item.ComputerId})"><i class="fas fa-edit"></i></a>
+                            <br />
+                            <a href="@Url.Action("Delete", "Computers", new {id = item.ComputerId})"><i class="fas fa-trash-alt"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+@section scripts {
+    <script>
+        //Apply the jQuery plugin function
+        //$(document).ready(function () {
+        //    $(".data-table").DataTable({
+        //        responsive: true
+        //    });
+        //});
+
+        $(document).ready(function () {
+            $('.data-table').DataTable({
+                responsive: true
+            });
+        });
+    </script>
+
+
+}
+
+

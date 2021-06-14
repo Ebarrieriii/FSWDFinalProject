@@ -102,6 +102,7 @@ namespace FSWDFinalProject.DATA.EF
         [Required]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true, NullDisplayText = "[-N/A-]")]
         [Display(Name = "Reservation Date")]
+        [DataType(DataType.Date)]
         public System.DateTime ReservationDate { get; set; }
     }
 

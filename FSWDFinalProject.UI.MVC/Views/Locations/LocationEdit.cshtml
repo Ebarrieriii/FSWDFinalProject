@@ -1,0 +1,56 @@
+﻿@model FSWDFinalProject.DATA.EF.Location
+
+
+@using (Html.BeginForm("AjaxEdit", "Locations", FormMethod.Post, new { id = "LocationEditForm" }))
+{
+    @Html.AntiForgeryToken()
+
+
+      <table>  
+          <tr>
+             @Html.HiddenFor(model => model.LocationId)
+              <td>
+                  @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control" } })
+                  @Html.ValidationMessageFor(model => model.LocationName, "", new { @class = "text-danger" })
+              </td>
+
+              <td>
+                  @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                  @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+              </td>
+
+
+              <td>
+                  @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                  @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+              </td>
+
+              <td>
+                  @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                  @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+              </td>
+
+
+              <td>
+                  @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                  @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+              </td>
+
+
+              <td>
+                  @Html.EditorFor(model => model.ReservationLimit, new { htmlAttributes = new { @class = "form-control" } })
+                  @Html.ValidationMessageFor(model => model.ReservationLimit, "", new { @class = "text-danger" })
+              </td>
+
+              <td>
+                  <input type="button" id="saveUpdate" value="Update Location" class="btn btn-primary" />
+              </td>
+          </tr>
+      </table>
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

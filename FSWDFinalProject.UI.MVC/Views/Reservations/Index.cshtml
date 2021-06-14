@@ -1,0 +1,67 @@
+﻿@model IEnumerable<FSWDFinalProject.DATA.EF.Reservation>
+
+@{
+    ViewBag.Title = "My Reservations";
+}
+
+@Html.Partial("_BannerPartial")
+
+<p>
+    @*@Html.ActionLink("Make a Reservation!", "Create", null, new { @class = "ml-4" })*@
+    <a class="btn btn-primary ml-4 mt-3" href="@Url.Action("Create", "Reservations")">Add New <i class="fas fa-plus"></i></a>
+
+</p>
+<table class="table ml-3 data-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Computer.ComputerModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location.LocationName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Computer.ComputerModel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.LocationName)
+                </td>
+                <td>
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Customer"))
+                    {
+                        <a href="@Url.Action("Edit", "Reservations", new {id = item.ReservationId})"><i class="fas fa-edit"></i></a>
+                        <br/>
+                        <a href="@Url.Action("Details", "Reservations", new { id=item.ReservationId})"> <i class="fas fa-info-circle"></i></a>
+                        <br/>
+                        <a href="@Url.Action("Delete", "Reservations", new {id = item.ReservationId})"><i class="fas fa-trash-alt"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section scripts {
+    <script>
+        //Apply the jQuery plugin function
+        $(document).ready(function () {
+            $(".data-table").DataTable();
+        });
+    </script>
+}
+
